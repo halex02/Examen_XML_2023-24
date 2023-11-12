@@ -1,0 +1,166 @@
+<!--——————————————————————————————————————————————————————————————————————————————————
+
+* * * DTD pour la structuration de textes littéraires * * *
+
+	version 6 — 11 octobre 2023
+	© Julien Lemaire
+———————————————————————————————————————————————————————————————————————————————————-->
+
+<!--ENTITÉS-->
+	<!ENTITY % typo "#PCDATA | ital | gras | sup | inf | pc | slg | dbl-slg | bar | lb | appel">
+		
+		<!ELEMENT ital (%typo;)* >
+		<!ELEMENT gras (%typo;)* >
+		<!ELEMENT sup (%typo;)* >
+		<!ELEMENT inf (%typo;)* >
+		<!ELEMENT pc (%typo;)* ><!-- petite capitale -->
+		<!ELEMENT slg (%typo;)* ><!-- souligné -->
+		<!ELEMENT dbl-slg (%typo;)* ><!-- double souligné -->
+		<!ELEMENT bar (%typo;)* ><!-- barré -->
+		<!ELEMENT lb EMPTY ><!-- line break (saut de ligne) -->
+		<!ELEMENT appel (#PCDATA) ><!-- appel de note -->
+
+<!-- RACINE -->
+<!ELEMENT Livre (identification, pages_liminaires, corps, pages_annexes?) >
+
+
+<!--I- IDENTIFICATION DE L'OUVRAGE  -->
+	<!ELEMENT identification ((faux-titre?, faux-sstitre?, auteur+, titre, sstitre?, edition-num?, editeur+, annee-edition?), 
+								(isbnPapier?, isbnEpub?, isbnWeb?, eanPapier?, eanEpub?, eanWeb?, issn?), 
+								(collection | volume | tome | auteur-critique | titreVO | copyright 
+								 | figure | info-traduction | illustrateur)*)>
+		
+		<!ELEMENT faux-titre (#PCDATA) >
+		<!ELEMENT faux-sstitre (#PCDATA) >
+		<!ELEMENT auteur (#PCDATA) >
+		<!ELEMENT titre (#PCDATA) >
+		<!ELEMENT sstitre (#PCDATA) >
+		<!ELEMENT collection (#PCDATA) >
+		<!ELEMENT vol-num (#PCDATA) >
+		<!ELEMENT tome (#PCDATA) >
+		<!ELEMENT annee-edition (#PCDATA) >
+		<!ELEMENT edition-num (#PCDATA) >
+		<!ELEMENT editeur (#PCDATA) >
+		<!ELEMENT auteur-critique (#PCDATA) >
+		<!ELEMENT titreVO (#PCDATA) >
+		<!ELEMENT eanPapier (#PCDATA) >
+		<!ELEMENT eanEpub (#PCDATA) >
+		<!ELEMENT eanWeb (#PCDATA) >
+		<!ELEMENT isbnPapier (#PCDATA) >
+		<!ELEMENT isbnEpub (#PCDATA) >
+		<!ELEMENT isbnWeb (#PCDATA) >
+		<!ELEMENT issn (#PCDATA) >
+		<!ELEMENT info-traduction (#PCDATA | traducteur)* >
+			<!ELEMENT traducteur (#PCDATA) >
+		<!ELEMENT illustrateur (#PCDATA) >
+		<!ELEMENT copyright (copy-info, copy-texte) >
+			<!ELEMENT copy-info (%typo;)* >
+			<!ELEMENT copy-texte (%typo;)* >
+
+
+
+<!--II- PAGES LIMINAIRES -->
+	<!ELEMENT pages_liminaires (plim | appareil_critique)*>
+			<!ELEMENT plim (plim-titre?, developpement, defnotes?) >
+				<!ELEMENT plim-titre (#PCDATA) >
+			<!ELEMENT appareil_critique (appcrit-titre, developpement, defnotes?) >
+				<!ELEMENT appcrit-titre (%typo;)* >
+
+<!--III- CORPS DE L'OUVRAGE -->
+		<!ELEMENT corps (volume+ | livre+ | partie+ | chapitre+ | section+)>
+				<!ELEMENT volume (vol-num, vol-titre?, vol-sstitre?, developpement, defnotes?) >
+						<!-- vol-num est déclaré dans page-titre -->
+						<!ELEMENT vol-titre (%typo;)* >
+						<!ELEMENT vol-sstitre (%typo;)* >
+				<!ELEMENT livre (liv-num, liv-titre?, liv-sstitre?, developpement, defnotes?) >
+						<!ELEMENT liv-num (#PCDATA) >
+						<!ELEMENT liv-titre (%typo;)* >
+						<!ELEMENT liv-sstitre (%typo;)* >
+				<!ELEMENT partie (part-num, part-titre, part-sstitre?, developpement, defnotes?) >
+						<!ELEMENT part-num (#PCDATA) >
+						<!ELEMENT part-titre (%typo;)* >
+						<!ELEMENT part-sstitre (%typo;)* >
+				<!ELEMENT chapitre (chap-num, chap-titre, chap-sstitre?, (developpement | sous-chapitre+), defnotes?) >
+						<!ELEMENT chap-num (#PCDATA) >
+						<!ELEMENT chap-titre (%typo;)* >
+						<!ELEMENT chap-sstitre (%typo;)* >
+						<!ELEMENT sous-chapitre (sschap-num?, sschap-titre, developpement, defnotes?) >
+								<!ELEMENT sschap-num (#PCDATA) >
+								<!ELEMENT sschap-titre (%typo;)* >
+				<!ELEMENT section (sect-num?, sect-titre, developpement, defnotes?) >
+						<!ELEMENT sect-num (#PCDATA) >
+						<!ELEMENT sect-titre (%typo;)* >
+						<!ELEMENT sous-section (sssect-num?, sssect-titre?, developpement) >
+							<!ELEMENT sssect-num (%typo;)* >
+							<!ELEMENT sssect-titre (%typo;)* >
+
+
+		<!ELEMENT developpement ((livre | partie | chapitre | section | sous-section )*
+								| (niv1 | niv2 | niv3 | niv4 | niv5)* 
+								| (lettrine | exergue | chapeau | dedicace | p | extrait | citation | lettre | liste | strophe | figure | dialogue | separateur | date | signature)*)* >
+				<!ELEMENT lettrine (#PCDATA) >
+				<!ELEMENT exergue (%typo;)* >
+				<!ELEMENT chapeau (%typo;)* >
+				<!ELEMENT dedicace (%typo;)* >
+				<!ELEMENT p (%typo;)* >
+				<!ELEMENT extrait (%typo;)* >
+				<!ELEMENT citation (p+, source) >
+						<!ELEMENT source (%typo;)* >
+				<!ELEMENT lettre (let-titre, developpement, signature) >
+					<!ELEMENT let-titre (%typo;)* >
+				<!ELEMENT liste (item)+ >
+						<!ELEMENT item (%typo;)* >
+				<!ELEMENT strophe (str-titre?, vers+, (source | signature)?) >
+						<!ELEMENT str-titre (%typo;)* >
+						<!ELEMENT vers (%typo;)* >
+				<!ELEMENT figure (img, (fig-titre | legende | source)*, description) >
+					<!ELEMENT fig-titre (%typo;)* >
+					<!ELEMENT img EMPTY >
+					<!ELEMENT legende (%typo;)* >
+					<!ELEMENT description (#PCDATA) >
+				<!ELEMENT dialogue (replique)+ >
+					<!ELEMENT replique (%typo;)* >
+				<!ELEMENT signature (%typo;)* >
+				<!ELEMENT separateur (#PCDATA) >
+				<!ELEMENT date (#PCDATA) >
+
+				<!-- JL- En édition française, ne pas respecter la hiérarchie des titres est monnaie courante.  C'est pour cela que dans un niveau 2, on pourrait trouver des niveau 5.-->
+				<!ELEMENT niv1 ((intertitre1, developpement)? | (niv2 | niv3 | niv4 | niv5)*) >
+				<!ELEMENT niv2 ((intertitre2, developpement)? | (niv3 | niv4 | niv5)*)>
+				<!ELEMENT niv3 ((intertitre3, developpement)? | (niv4 | niv5)*) >
+				<!ELEMENT niv4 ((intertitre4, developpement)? | (niv5)*) >
+				<!ELEMENT niv5 (intertitre5, developpement) >
+					<!-- Les titres intérieurs -->
+					<!ELEMENT intertitre1 (%typo;)* >
+					<!ELEMENT intertitre2 (%typo;)* >
+					<!ELEMENT intertitre3 (%typo;)* >
+					<!ELEMENT intertitre4 (%typo;)* >
+					<!ELEMENT intertitre5 (%typo;)* >
+			
+<!--IV — PAGES ANNEXES  -->
+<!ELEMENT pages_annexes (table | index | appendice | achevé_imprimé)*>
+	<!ELEMENT table (#PCDATA) >
+	<!ELEMENT index (#PCDATA) >
+	<!ELEMENT appendice (appen-num?, appen-titre?, developpement, defnotes?) >
+		<!ELEMENT appen-num (%typo;)* >
+		<!ELEMENT appen-titre (%typo;)* >
+	<!ELEMENT achevé_imprimé (p | img)* >
+	
+	<!ELEMENT defnotes (note+) >
+		<!ELEMENT note (p) >
+
+
+<!-- ATTRIBUTS -->
+<!ATTLIST appareil-critique type (notes | cartes | index | biographie | lexique | autre) #REQUIRED >
+<!ATTLIST appendice type (postface | conclusion | remerciements | bibliographie | biographie | chronologie | remarque | annexe | notes | autre) #REQUIRED >
+<!ATTLIST appel id ID #REQUIRED >
+<!ATTLIST appel type (footnote | endnote) #REQUIRED >
+<!ATTLIST figure type CDATA #IMPLIED>
+<!ATTLIST img src CDATA #REQUIRED >
+<!ATTLIST liste type (puce | tiret-long | tiret-court | chiffre) #REQUIRED >
+<!ATTLIST Livre xml:lang CDATA #FIXED "fr">
+<!ATTLIST note id IDREF #REQUIRED >
+<!ATTLIST note type (footnote | endnote) #REQUIRED > <!-- on précise si les ce sont des notes de bas de page ou des notes de fin -->
+<!ATTLIST plim type (introduction | avertissement | preface | remerciements | dedicace | prologue | preambule | distribution | biographie | notes |  autre) #REQUIRED >
+<!ATTLIST separateur type (etoile1 | asterisme | filet) #REQUIRED >
+<!ATTLIST table type (TDM | chronologique) #REQUIRED >
